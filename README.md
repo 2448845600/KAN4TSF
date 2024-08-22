@@ -1,6 +1,6 @@
 # KAN4TSF
 
-KAN4TSF is an official PyTorch implementation of "Are KANs Effective for Time Series Forecasting?". 
+KAN4TSF is an official PyTorch implementation of [KAN4TSF: Are KAN and KAN-based models Effective for Time Series Forecasting?](https://arxiv.org/pdf/2408.11306). 
 Although it is called KAN4TSF, it also supports time series forecasting methods of various network structures (CNN, Linear, Transformer and others).
 
 ## Usage
