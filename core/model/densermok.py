@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from core.layer.kanlayer import WaveKANLayer, TaylorKANLayer, JacobiKANLayer
+
+from core.layer.kanlayer import TaylorKANLayer, WaveKANLayer
 
 
 class RevIN(nn.Module):
@@ -78,7 +79,7 @@ class DenseRMoK(nn.Module):
             TaylorKANLayer(hist_len, pred_len, order=3, addbias=True),
             TaylorKANLayer(hist_len, pred_len, order=3, addbias=True),
             WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda"),
-            WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda")
+            WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda"),
         ])
 
         self.dropout = nn.Dropout(drop)
