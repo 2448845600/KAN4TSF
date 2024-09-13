@@ -2,7 +2,6 @@
 __pycache__/
 .vscode/
 checkpoints/
-datasets/raw_data
 todo.md
 gpu_task.py
 cmd.sh
