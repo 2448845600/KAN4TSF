@@ -20,11 +20,11 @@ pip install -r requirements.txt
 ```
 
 ### Code and Data
-ETT can be downloaded within this project, and other datasets will be released soon.
+ETTh1 and ETTm1 can be downloaded within this project, and other datasets can be downloaded from ![BaiduPan](链接: https://pan.baidu.com/s/18NKge4dsMIuGQFom7n2S2w?pwd=zumh 提取码: zumh 复制这段内容后打开百度网盘手机App，操作更方便哦).
 
 ### Running
 ```shell
-python train.py -c config/reproduce_conf/DLinear/96for96.py
+python train.py -c config/reproduce_conf/RMoK/ETTh1_96for96.py
 ```
 
 ## Cite

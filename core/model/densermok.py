@@ -75,14 +75,10 @@ class DenseRMoK(nn.Module):
         self.gate = nn.Linear(hist_len, num_experts)
         self.softmax = nn.Softmax(dim=-1)
         self.experts = nn.ModuleList([
-            # TaylorKANLayer(hist_len, pred_len, order=3, addbias=True),
-            # TaylorKANLayer(hist_len, pred_len, order=3, addbias=True),
-            # WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda"),
-            # WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda")
             TaylorKANLayer(hist_len, pred_len, order=3, addbias=True),
-            JacobiKANLayer(hist_len, pred_len, degree=6),
+            TaylorKANLayer(hist_len, pred_len, order=3, addbias=True),
             WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda"),
-            nn.Linear(hist_len, pred_len),
+            WaveKANLayer(hist_len, pred_len, wavelet_type="mexican_hat", device="cuda")
         ])
 
         self.dropout = nn.Dropout(drop)
@@ -100,4 +96,4 @@ class DenseRMoK(nn.Module):
 
         prediction = torch.einsum("BLE,BE->BL", expert_outputs, score).reshape(B, N, -1).permute(0, 2, 1)
         prediction = self.rev(prediction, 'denorm')
-        return prediction, score.reshape(B, N, 4)
+        return prediction
