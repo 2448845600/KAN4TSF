@@ -6,5 +6,6 @@ exp_conf = dict(
     pred_len=96,
 
     revin_affine=True,
-    lr=0.001,
+
+    lr=0.01,
 )
