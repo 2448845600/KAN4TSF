@@ -1,4 +1,5 @@
 import math
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -788,6 +789,7 @@ class RBFKANLayer(nn.Module):
     """
     https://github.com/Sid2690/RBF-KAN/blob/main/RBF_KAN.py
     """
+
     def __init__(self, input_dim, output_dim, num_centers, alpha=1.0):
         super(RBFKANLayer, self).__init__()
         self.input_dim = input_dim
@@ -839,3 +841,62 @@ class KANInterface(nn.Module):
         B, N, L = x.shape
         x = x.reshape(B * N, L)
         return self.transform(x).reshape(B, N, self.out_features)
+
+
+class MoKLayer(nn.Module):
+    def __init__(self, in_features, out_features, experts_type="A", gate_type="Linear"):
+        super(MoKLayer, self).__init__()
+        if experts_type == "A":
+            self.experts = nn.ModuleList([
+                TaylorKANLayer(in_features, out_features, order=3, addbias=True),
+                TaylorKANLayer(in_features, out_features, order=3, addbias=True),
+                WaveKANLayer(in_features, out_features, wavelet_type="mexican_hat", device="cuda"),
+                WaveKANLayer(in_features, out_features, wavelet_type="mexican_hat", device="cuda")
+            ])
+        elif experts_type == "B":
+            self.experts = nn.ModuleList([
+                TaylorKANLayer(in_features, out_features, order=3, addbias=True),
+                TaylorKANLayer(in_features, out_features, order=3, addbias=True),
+                JacobiKANLayer(in_features, out_features, degree=6),
+                JacobiKANLayer(in_features, out_features, degree=6),
+            ])
+        elif experts_type == "C":
+            self.experts = nn.ModuleList([
+                TaylorKANLayer(in_features, out_features, order=3, addbias=True),
+                TaylorKANLayer(in_features, out_features, order=4, addbias=True),
+                JacobiKANLayer(in_features, out_features, degree=5),
+                JacobiKANLayer(in_features, out_features, degree=6),
+            ])
+        elif experts_type == "L":
+            self.experts = nn.ModuleList([
+                nn.Linear(in_features, out_features),
+                nn.Linear(in_features, out_features),
+                nn.Linear(in_features, out_features),
+                nn.Linear(in_features, out_features),
+            ])
+        elif experts_type == "V":
+            self.experts = nn.ModuleList([
+                TaylorKANLayer(in_features, out_features, order=3, addbias=True),
+                JacobiKANLayer(in_features, out_features, degree=6),
+                WaveKANLayer(in_features, out_features, wavelet_type="mexican_hat", device="cuda"),
+                nn.Linear(in_features, out_features),
+            ])
+        else:
+            raise NotImplemented
+
+        self.n_expert = len(self.experts)
+        self.softmax = nn.Softmax(dim=-1)
+
+        if gate_type == "Linear":
+            self.gate = nn.Linear(in_features, self.n_expert)
+        elif gate_type == "KAN":
+            self.gate = JacobiKANLayer(in_features, self.n_expert, degree=5)
+        else:
+            raise NotImplemented
+
+    def forward(self, x):
+        B, N, L = x.shape
+        x = x.reshape(B * N, L)
+        score = F.softmax(self.gate(x), dim=-1)  # (BxN, E)
+        expert_outputs = torch.stack([self.experts[i](x) for i in range(self.n_expert)], dim=-1)  # (BxN, Lo, E)
+        return torch.einsum("BLE,BE->BL", expert_outputs, score).reshape(B, N, -1).contiguous()
