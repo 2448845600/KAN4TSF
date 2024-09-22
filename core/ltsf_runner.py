@@ -99,7 +99,7 @@ class LTSFRunner(L.LightningModule):
 
     def load_model(self):
         model_name = self.hparams.model_name
-        Model = getattr(importlib.import_module('.' + model_name.lower(), package='core.model'), model_name)
+        Model = getattr(importlib.import_module('.' + model_name, package='core.model'), model_name)
         self.model = self.instancialize(Model)
 
     def instancialize(self, Model):

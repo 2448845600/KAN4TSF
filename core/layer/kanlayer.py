@@ -814,7 +814,7 @@ class RBFKANLayer(nn.Module):
 
 
 class KANInterface(nn.Module):
-    def __init__(self, in_features, out_features, layer_type, n_grid, degree, order, n_center):
+    def __init__(self, in_features, out_features, layer_type, n_grid=None, degree=None, order=None, n_center=None):
         super(KANInterface, self).__init__()
         self.in_features = in_features
         self.out_features = out_features

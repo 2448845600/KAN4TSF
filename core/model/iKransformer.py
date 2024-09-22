@@ -64,10 +64,10 @@ class KANAttentionLayer(nn.Module):
         return self.out_projection(out), attn
 
 
-class iTransformerKAN(nn.Module):
+class iKransformer(nn.Module):
     def __init__(self, hist_len, pred_len, output_attention, d_model, dropout, factor, n_heads,
                  d_ff, activation, e_layers, kan_type, kan_param, use_out_kan):
-        super(iTransformerKAN, self).__init__()
+        super(iKransformer, self).__init__()
 
         self.seq_len = hist_len
         self.pred_len = pred_len
