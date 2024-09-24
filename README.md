@@ -3,6 +3,8 @@
 KAN4TSF is an official PyTorch implementation of [KAN4TSF: Are KAN and KAN-based models Effective for Time Series Forecasting?](https://arxiv.org/pdf/2408.11306)
 Although it is called KAN4TSF, it also supports time series forecasting methods of various network structures (CNN, Linear, Transformer and others).
 
+🚩 **News** (2024.09) Model Zoo: RMoK, NLinear, DLinear, RLinear, PatchTST, iTransformer, STID, TimeLLM
+
 🚩 **News** (2024.09) [Introduction and Reproduction (in Chinese)](https://mp.weixin.qq.com/s/bSwAbKBxON7FPebAiqltWg)
 
 ## Usage
