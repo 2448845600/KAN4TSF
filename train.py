@@ -7,10 +7,10 @@ import lightning.pytorch as L
 from lightning.pytorch.callbacks import LearningRateMonitor, ModelCheckpoint, EarlyStopping
 from lightning.pytorch.loggers import CSVLogger, WandbLogger
 
-from core.data_runner import DataInterface
-from core.ltsf_runner import LTSFRunner
-from core.util import cal_conf_hash
-from core.util import load_module_from_path
+from easytsf.runner.data_runner import DataInterface
+from easytsf.runner.exp_runner import LTSFRunner
+from easytsf.util import cal_conf_hash
+from easytsf.util import load_module_from_path
 
 
 def load_config(exp_conf_path):

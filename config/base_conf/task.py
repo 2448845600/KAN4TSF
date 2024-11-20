@@ -1,6 +1,6 @@
 task_conf = dict(
     hist_len=96,
-    pred_len=720,
+    pred_len=96,
 
     batch_size=64,
     max_epochs=10,
@@ -14,7 +14,10 @@ task_conf = dict(
     gradient_clip_val=5,
     val_metric="val/loss",
     test_metric="test/mae",
-    es_patience=3,
+    es_patience=10,
+
+    norm_time_feature=False,
+    time_feature_cls=["tod", "dow"],
 
     num_workers=2,
 )
