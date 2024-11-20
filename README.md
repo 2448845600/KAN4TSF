@@ -1,4 +1,4 @@
-# KAN4TSF
+# EasyTSF
 
 EasyTSF: **E**xperiment **as**sistant for **y**our **T**ime-**S**eries **F**orecasting
 
