@@ -1,9 +1,6 @@
 # EasyTSF
 
-EasyTSF: **E**xperiment **as**sistant for **y**our **T**ime-**S**eries **F**orecasting
-
-This is an official PyTorch implementation of [KAN4TSF: Are KAN and KAN-based models Effective for Time Series Forecasting?](https://arxiv.org/pdf/2408.11306)
-Although it is called KAN4TSF, it also supports time series forecasting methods of various network structures (CNN, Linear, Transformer and others).
+This project was upgraded from KAN4TSF to EasyTSF(**E**xperiment **as**sistant for **y**our **T**ime-**S**eries **F**orecasting).
 
 🚩 **News** (2024.11) KAN4TSF -> EasyTSF, we will support more time series forecasting models.
 
@@ -39,7 +36,7 @@ python train.py -c config/reproduce_conf/RMoK/ETTh1_96for96.py
 If you find this repo useful, please cite our paper:
 ```
 @inproceedings{han2023are,
-  title={Are KANs Effective for Time Series Forecasting?},
+  title={KAN4TSF: Are KAN and KAN-based models Effective for Time Series Forecasting?},
   author={Xiao Han, Xinfeng Zhang, Yiling Wu, Zhenduo Zhang and Zhe Wu},
   booktitle={arXiv},
   year={2024},
