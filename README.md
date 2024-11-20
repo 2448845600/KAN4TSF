@@ -1,6 +1,6 @@
 # EasyTSF
 
-This project was upgraded from KAN4TSF to EasyTSF(**E**xperiment **as**sistant for **y**our **T**ime-**S**eries **F**orecasting).
+This project was upgraded from KAN4TSF to EasyTSF (**E**xperiment **as**sistant for **y**our **T**ime-**S**eries **F**orecasting).
 
 🚩 **News** (2024.11) KAN4TSF -> EasyTSF, we will support more time series forecasting models.
 
