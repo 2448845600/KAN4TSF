@@ -25,7 +25,8 @@ pip install -r requirements.txt
 ```
 
 ### Code and Data
-ETTh1 and ETTm1 can be downloaded within this project, and other datasets can be downloaded from [[Baidu Drive]](https://pan.baidu.com/s/18NKge4dsMIuGQFom7n2S2w?pwd=zumh).
+ETTh1 and ETTm1 can be downloaded within this project, and other datasets can be downloaded from [Baidu Drive](https://pan.baidu.com/s/18NKge4dsMIuGQFom7n2S2w?pwd=zumh) or 
+[Google Drive](https://drive.google.com/file/d/17JYLHDPIdLv9haLiDF9G_eGewhmMhGbq/view?usp=sharing).
 
 ### Running
 ```shell
