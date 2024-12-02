@@ -86,7 +86,7 @@ class DenseRMoK(nn.Module):
         self.rev = RevIN(var_num, affine=revin_affine)
 
     def forward(self, var_x, marker_x):
-        var_x = var_x[..., 0]  # x: [B, Li, N]
+        # var_x = var_x[..., 0]  # x: [B, Li, N]
         B, L, N = var_x.shape
         var_x = self.rev(var_x, 'norm') if self.rev else var_x
         var_x = self.dropout(var_x).transpose(1, 2).reshape(B * N, L)
