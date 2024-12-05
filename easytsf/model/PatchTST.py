@@ -72,8 +72,6 @@ class PatchTST(nn.Module):
         self.head = FlattenHead(var_num, self.head_nf, self.pred_len, head_dropout=dropout)
 
     def forward(self, var_x, marker_x):
-        var_x = var_x[..., 0]
-
         # Normalization from Non-stationary Transformer
         means = var_x.mean(1, keepdim=True).detach()
         x_enc = var_x - means

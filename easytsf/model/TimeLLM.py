@@ -206,19 +206,18 @@ class TimeLLM(nn.Module):
         self.normalize_layers = Normalize(var_num, affine=False)
 
     def forward(self, var_x, marker_x):
-        x_enc = var_x[..., 0]
-        x_enc = self.normalize_layers(x_enc, 'norm')
-        B, T, N = x_enc.size()
-        x_enc = x_enc.permute(0, 2, 1).contiguous().reshape(B * N, T, 1)
+        var_x = self.normalize_layers(var_x, 'norm')
+        B, T, N = var_x.size()
+        var_x = var_x.permute(0, 2, 1).contiguous().reshape(B * N, T, 1)
 
-        min_values = torch.min(x_enc, dim=1)[0]
-        max_values = torch.max(x_enc, dim=1)[0]
-        medians = torch.median(x_enc, dim=1).values
-        lags = self.calcute_lags(x_enc)
-        trends = x_enc.diff(dim=1).sum(dim=1)
+        min_values = torch.min(var_x, dim=1)[0]
+        max_values = torch.max(var_x, dim=1)[0]
+        medians = torch.median(var_x, dim=1).values
+        lags = self.calcute_lags(var_x)
+        trends = var_x.diff(dim=1).sum(dim=1)
 
         prompt = []
-        for b in range(x_enc.shape[0]):
+        for b in range(var_x.shape[0]):
             min_values_str = str(min_values[b].tolist()[0])
             max_values_str = str(max_values[b].tolist()[0])
             median_values_str = str(medians[b].tolist()[0])
@@ -236,15 +235,15 @@ class TimeLLM(nn.Module):
 
             prompt.append(prompt_)
 
-        x_enc = x_enc.reshape(B, N, T).permute(0, 2, 1).contiguous()
+        var_x = var_x.reshape(B, N, T).permute(0, 2, 1).contiguous()
 
         prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
-        prompt_embeddings = self.llm_model.get_input_embeddings()(prompt.to(x_enc.device))  # (batch, prompt_token, dim)
+        prompt_embeddings = self.llm_model.get_input_embeddings()(prompt.to(var_x.device))  # (batch, prompt_token, dim)
 
         source_embeddings = self.mapping_layer(self.word_embeddings.permute(1, 0)).permute(1, 0)
 
-        x_enc = x_enc.permute(0, 2, 1).contiguous()
-        enc_out, n_vars = self.patch_embedding(x_enc.to(torch.bfloat16))
+        var_x = var_x.permute(0, 2, 1).contiguous()
+        enc_out, n_vars = self.patch_embedding(var_x.to(torch.bfloat16))
         enc_out = self.reprogramming_layer(enc_out, source_embeddings, source_embeddings)
         llama_enc_out = torch.cat([prompt_embeddings, enc_out], dim=1)
         dec_out = self.llm_model(inputs_embeds=llama_enc_out).last_hidden_state

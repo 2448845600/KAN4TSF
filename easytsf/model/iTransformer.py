@@ -52,7 +52,5 @@ class iTransformer(nn.Module):
         return dec_out
 
     def forward(self, var_x, marker_x):
-        x_enc = var_x[..., 0]
-        x_mark_enc = marker_x[..., 0,]
-        dec_out = self.forecast(x_enc, x_mark_enc)
+        dec_out = self.forecast(var_x, marker_x)
         return dec_out[:, -self.pred_len:, :]  # [B, L, D]

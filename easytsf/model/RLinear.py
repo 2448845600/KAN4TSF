@@ -68,7 +68,6 @@ class RLinear(nn.Module):
         self.rev = RevIN(var_num) if rev else None
 
     def forward(self, var_x, marker_x):
-        var_x = var_x[..., 0]  # x: [B, L, D]
         var_x = self.rev(var_x, 'norm') if self.rev else var_x
         var_x = self.dropout(var_x)
         pred = self.model(var_x.transpose(1, 2)).transpose(1, 2)
